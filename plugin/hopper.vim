@@ -1,6 +1,5 @@
 function! hopper#search(direction)
-  call search(b:hopper_pattern, a:direction)
-  normal! ^
+  call search('\v^(\s*\zs)'.b:hopper_pattern, a:direction)
 endfunction
 
 function! hopper#next()
@@ -12,14 +11,20 @@ function! hopper#prev()
 endfunction
 
 function! hopper#load_ruby()
-  let b:hopper_pattern = '\v^\s*(def|class|module)'
-  call hopper#defineMode('ruby')
+  let file_name = expand('%')
+  if file_name =~ 'spec.rb$'
+    let b:hopper_pattern = '(describe|context|it) .* (do|\{)'
+    call hopper#defineMovementMode('rspec')
+  else
+    let b:hopper_pattern = '(def|class|module)'
+    call hopper#defineMovementMode('ruby')
+  endif
 endfunction
 
 let g:hopper_prefix = '<esc>'
 
-function! hopper#defineMode(name)
-  let mode_name = a:name.'hopper'
+function! hopper#defineMovementMode(name)
+  let mode_name = a:name.'-hopper'
   call submode#enter_with(mode_name, 'n', '', g:hopper_prefix.'j', ':call hopper#next()<cr>' )
   call submode#enter_with(mode_name, 'n', '', g:hopper_prefix.'k', ':call hopper#prev()<cr>')
   call submode#map(mode_name, 'n', '', 'j', ':call hopper#next()<cr>')
