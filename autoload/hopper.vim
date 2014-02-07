@@ -68,6 +68,7 @@ function! hopper#define_movement_mode()
   call submode#map(mode_name, 'n', '', 'J', ':call hopper#next_with_same_indentation()<cr>')
   call submode#map(mode_name, 'n', '', 'K', ':call hopper#prev_with_same_indentation()<cr>')
   call submode#map(mode_name, 'n', '', 'b', ':call hopper#go_to_last_hop()<cr>')
+  call submode#map(mode_name, 'n', '', 'f', ':call hopper#go_to_last_hop()<cr>')
 endfunction
 
 function! hopper#load_gitgutter()
