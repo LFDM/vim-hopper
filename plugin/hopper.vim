@@ -47,12 +47,18 @@ endfunction
 function! hopper#load_gitgutter()
   let mode = 'gitgutter'
   call submode#enter_with(mode, 'n', '', g:hopper_prefix.'g', '<nop>')
-  call submode#map(mode, 'n', '', 'j', ':GitGutterNextHunk<cr>')
-  call submode#map(mode, 'n', '', 'k', ':GitGutterPrevHunk<cr>')
-  call submode#map(mode, 'n', '', 'a', ':GitGutterStageHunk<cr>')
-  call submode#map(mode, 'n', '', 's', ':GitGutterStageHunk<cr>')
-  call submode#map(mode, 'n', '', 'u', ':GitGutterRevertHunk<cr>')
-  call submode#map(mode, 'n', '', 'r', ':GitGutterRevertHunk<cr>')
+  let gitgutter_map = {
+        \ 'j' : 'Next',
+        \ 'k' : 'Prev',
+        \ 'a' : 'Stage',
+        \ 's' : 'Stage',
+        \ 'u' : 'Revert',
+        \ 'r' : 'Revert',
+  \}
+
+  for [k, c] in items(gitgutter_map)
+    call submode#map(mode, 'n', '', k, ':GitGutter'.c.'Hunk<cr>')
+  endfor
 
   if exists('g:loaded_fugitive')
     call submode#map(mode, 'n', '', 'c', ':Gcommit<cr>')
