@@ -4,12 +4,11 @@ endif
 
 function! hopper#search(direction)
   call search('\v^(\s*\zs)'.b:hopper_pattern, a:direction)
-  if g:hopper_center_on_jump
-    normal zz
-  endif
+  call hopper#centralize()
 endfunction
 
 function! hopper#search_with_same_indentation(direction)
+  call hopper#save_position()
   let indentation = indent('.')
   call hopper#search(a:direction)
   while !(indentation == indent('.'))
@@ -18,18 +17,40 @@ function! hopper#search_with_same_indentation(direction)
 endfunction
 
 function! hopper#search_with_changed_scoped(direction)
-  let operator = a:direction == 'b' ? '>' : '>'
+  call hopper#save_position()
+  let operator = a:direction == 'b' ? '>' : '<'
   let indentation = indent('.')
   while eval('!(indentation '.operator.' indent("."))')
     call hopper#search(a:direction)
   endwhile
 endfunction
 
+function! hopper#go_to_last_hop()
+  if exists('b:hopper_last_hop')
+    let last_pos = b:hopper_last_hop
+    call hopper#save_position()
+    call setpos('.', last_pos)
+    call hopper#centralize()
+  endif
+endfunction
+
+function! hopper#centralize()
+  if g:hopper_center_on_jump
+    normal zz
+  endif
+endfunction
+
+function! hopper#save_position()
+  let b:hopper_last_hop = getpos('.')
+endfunction
+
 function! hopper#next()
+  call hopper#save_position()
   call hopper#search('')
 endfunction
 
 function! hopper#prev()
+  call hopper#save_position()
   call hopper#search('b')
 endfunction
 
@@ -70,6 +91,7 @@ function! hopper#define_movement_mode()
   call submode#map(mode_name, 'n', '', 'l', ':call hopper#next_inner()<cr>')
   call submode#map(mode_name, 'n', '', 'J', ':call hopper#next_with_same_indentation()<cr>')
   call submode#map(mode_name, 'n', '', 'K', ':call hopper#prev_with_same_indentation()<cr>')
+  call submode#map(mode_name, 'n', '', 'b', ':call hopper#go_to_last_hop()<cr>')
 endfunction
 
 function! hopper#load_support_modes()
