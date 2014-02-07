@@ -34,8 +34,10 @@ endfunction
 
 function! hopper#prev_outer()
   let ind = indent(line('.'))
-  let op = ind == 0 ? '{0}' : '{0,'.string(ind - 1).'}'
-  call hopper#search('b', op)
+  if ind == 0
+    return
+  endif
+  call hopper#search('b', '{0,'.string(ind - 1).'}')
 endfunction
 
 function! hopper#next_inner()
@@ -91,7 +93,7 @@ function! hopper#load_gitgutter()
 endfunction
 
 function! hopper#load_speed()
-  let mode = 'speed'
+  let mode = 'speedjumping'
   call submode#enter_with(mode, 'nv', '', g:hopper_prefix.'s', '<nop>')
   call submode#map(mode, 'nv', '', 'j', '5j')
   call submode#map(mode, 'nv', '', 'k', '5k')
