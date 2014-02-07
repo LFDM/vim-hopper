@@ -1,4 +1,4 @@
-if exists('g:loaded_hopper')
+if exists('g:loaded_hopper') || &cp
   finish
 endif
 
