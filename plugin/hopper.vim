@@ -14,16 +14,16 @@ function! hopper#load_ruby()
   let file_name = expand('%')
   if file_name =~ 'spec.rb$'
     let b:hopper_pattern = '(describe|context|it) .* (do|\{)'
-    call hopper#defineMovementMode('rspec')
+    call hopper#define_movement_mode('rspec')
   else
     let b:hopper_pattern = '(def|class|module)'
-    call hopper#defineMovementMode('ruby')
+    call hopper#define_movement_mode('ruby')
   endif
 endfunction
 
 let g:hopper_prefix = '<esc>'
 
-function! hopper#defineMovementMode(name)
+function! hopper#define_movement_mode(name)
   let mode_name = a:name.'-hopper'
   call submode#enter_with(mode_name, 'n', '', g:hopper_prefix.'j', ':call hopper#next()<cr>' )
   call submode#enter_with(mode_name, 'n', '', g:hopper_prefix.'k', ':call hopper#prev()<cr>')
