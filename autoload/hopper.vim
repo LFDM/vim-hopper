@@ -1,35 +1,8 @@
-function! hopper#search(direction)
-  call search('\v^(\s*\zs)'.b:hopper_pattern, a:direction)
+function! hopper#search(direction, ws)
+  call hopper#save_position()
+  let flags = a:direction.'W'
+  call search('\v^\s'.a:ws.'\zs'.b:hopper_pattern, flags)
   call hopper#centralize()
-endfunction
-
-function! hopper#search_with_same_indentation(direction)
-  call hopper#save_position()
-  let indentation = indent('.')
-  call hopper#search(a:direction)
-  while !(indentation == indent('.'))
-    call hopper#search(a:direction)
-    if hopper#file_boundary_reached()
-      break
-    endif
-  endwhile
-endfunction
-
-function! hopper#search_with_changed_scoped(direction)
-  call hopper#save_position()
-  let operator = a:direction == 'b' ? '>' : '<'
-  let indentation = indent('.')
-  while eval('!(indentation '.operator.' indent("."))')
-    call hopper#search(a:direction)
-    if hopper#file_boundary_reached()
-      break
-    endif
-  endwhile
-endfunction
-
-function! hopper#file_boundary_reached()
-  let line = ('.')
-  return line == 0 || line == line('$')
 endfunction
 
 function! hopper#go_to_last_hop()
@@ -52,21 +25,26 @@ function! hopper#save_position()
 endfunction
 
 function! hopper#next()
-  call hopper#save_position()
-  call hopper#search('')
+  call hopper#search('', '*')
 endfunction
 
 function! hopper#prev()
-  call hopper#save_position()
-  call hopper#search('b')
+  call hopper#search('b', '*')
 endfunction
 
 function! hopper#prev_outer()
-  call hopper#search_with_changed_scoped('b')
+  let ind = indent(line('.'))
+  let op = ind == 0 ? '{0}' : '{0,'.string(ind - 1).'}'
+  call hopper#search('b', op)
 endfunction
 
 function! hopper#next_inner()
-  call hopper#search_with_changed_scoped('')
+  let ind = indent(line('.')) + 1
+  call hopper#search('', '{'.ind.',}')
+endfunction
+
+function! hopper#search_with_same_indentation(direction)
+  call hopper#search(a:direction, '{'.indent('.').'}')
 endfunction
 
 function! hopper#next_with_same_indentation()
