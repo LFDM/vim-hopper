@@ -9,12 +9,44 @@ function! hopper#search(direction)
   endif
 endfunction
 
+function! hopper#search_with_same_indentation(direction)
+  let indentation = indent('.')
+  call hopper#search(a:direction)
+  while !(indentation == indent('.'))
+    call hopper#search(a:direction)
+  endwhile
+endfunction
+
+function! hopper#search_with_changed_scoped(direction)
+  let operator = a:direction == 'b' ? '>' : '>'
+  let indentation = indent('.')
+  while eval('!(indentation '.operator.' indent("."))')
+    call hopper#search(a:direction)
+  endwhile
+endfunction
+
 function! hopper#next()
   call hopper#search('')
 endfunction
 
 function! hopper#prev()
   call hopper#search('b')
+endfunction
+
+function! hopper#prev_outer()
+  call hopper#search_with_changed_scoped('b')
+endfunction
+
+function! hopper#next_inner()
+  call hopper#search_with_changed_scoped('')
+endfunction
+
+function! hopper#next_with_same_indentation()
+  call hopper#search_with_same_indentation('')
+endfunction
+
+function! hopper#prev_with_same_indentation()
+  call hopper#search_with_same_indentation('b')
 endfunction
 
 function! hopper#load_movement_mode()
@@ -34,8 +66,10 @@ function! hopper#define_movement_mode()
   call submode#enter_with(mode_name, 'n', '', g:hopper_prefix.'k', ':call hopper#prev()<cr>')
   call submode#map(mode_name, 'n', '', 'j', ':call hopper#next()<cr>')
   call submode#map(mode_name, 'n', '', 'k', ':call hopper#prev()<cr>')
-  call submode#map(mode_name, 'n', '', 'j', ':call hopper#next()<cr>')
-  call submode#map(mode_name, 'n', '', 'k', ':call hopper#prev()<cr>')
+  call submode#map(mode_name, 'n', '', 'h', ':call hopper#prev_outer()<cr>')
+  call submode#map(mode_name, 'n', '', 'l', ':call hopper#next_inner()<cr>')
+  call submode#map(mode_name, 'n', '', 'J', ':call hopper#next_with_same_indentation()<cr>')
+  call submode#map(mode_name, 'n', '', 'K', ':call hopper#prev_with_same_indentation()<cr>')
 endfunction
 
 function! hopper#load_support_modes()
@@ -47,6 +81,7 @@ endfunction
 function! hopper#load_gitgutter()
   let mode = 'gitgutter'
   call submode#enter_with(mode, 'n', '', g:hopper_prefix.'g', '<nop>')
+
   let gitgutter_map = {
         \ 'j' : 'Next',
         \ 'k' : 'Prev',
