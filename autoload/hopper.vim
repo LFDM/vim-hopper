@@ -9,6 +9,9 @@ function! hopper#search_with_same_indentation(direction)
   call hopper#search(a:direction)
   while !(indentation == indent('.'))
     call hopper#search(a:direction)
+    if hopper#file_boundary_reached()
+      break
+    endif
   endwhile
 endfunction
 
@@ -18,7 +21,15 @@ function! hopper#search_with_changed_scoped(direction)
   let indentation = indent('.')
   while eval('!(indentation '.operator.' indent("."))')
     call hopper#search(a:direction)
+    if hopper#file_boundary_reached()
+      break
+    endif
   endwhile
+endfunction
+
+function! hopper#file_boundary_reached()
+  let line = ('.')
+  return line == 0 || line == line('$')
 endfunction
 
 function! hopper#go_to_last_hop()
