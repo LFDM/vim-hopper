@@ -16,7 +16,7 @@ endfunction
 
 function! hopper#go_to_end()
   try
-    call b:hopper_go_to_special_end
+    call b:hop_to_special_end()
   catch
     " don't call this with !, as matchit wraps the built-in % behavior
     normal %
