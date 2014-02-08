@@ -16,7 +16,7 @@ endfunction
 
 function! hopper#centralize()
   if g:hopper_center_on_jump
-    normal zz
+    normal! zz
   endif
 endfunction
 
