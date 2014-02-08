@@ -14,6 +14,15 @@ function! hopper#go_to_last_hop()
   endif
 endfunction
 
+function! hopper#go_to_end()
+  try
+    call b:hopper_go_to_special_end
+  catch
+    " don't call this with !, as matchit wraps the built-in % behavior
+    normal %
+  endtry
+endfunction
+
 function! hopper#centralize()
   if g:hopper_center_on_jump
     normal! zz
@@ -69,6 +78,10 @@ function! hopper#define_movement_mode()
   call submode#map(mode_name, 'n', '', 'K', ':call hopper#prev_with_same_indentation()<cr>')
   call submode#map(mode_name, 'n', '', 'b', ':call hopper#go_to_last_hop()<cr>')
   call submode#map(mode_name, 'n', '', 'f', ':call hopper#go_to_last_hop()<cr>')
+
+  if g:loaded_matchit
+    call submode#map(mode_name, 'n', '', 'e', ':call hopper#go_to_end()<cr>')
+  endif
 endfunction
 
 function! hopper#load_gitgutter()
