@@ -87,12 +87,16 @@ function! hopper#define_movement_mode()
   call hopper#map_movement_key(mode_name, 'b', 'go_to_last_hop')
   call hopper#map_movement_key(mode_name, 'f', 'go_to_last_hop')
 
-  if g:loaded_matchit
+  if exists('g:loaded_matchit')
     call hopper#map_movement_key(mode_name, 'e', 'go_to_end')
   endif
 endfunction
 
 function! hopper#load_gitgutter()
+  if !exists('g:loaded_gitgutter')
+    return
+  endif
+
   let mode = 'gitgutter'
   call submode#enter_with(mode, 'n', '', g:hopper_prefix.'g', '<nop>')
 
