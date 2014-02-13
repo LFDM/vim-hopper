@@ -126,3 +126,14 @@ function! hopper#load_speed()
   call submode#map(mode, 'nv', '', 'J', '10j')
   call submode#map(mode, 'nv', '', 'K', '10k')
 endfunction
+
+function! hopper#load_yankring()
+  if !exists('g:loaded_yankring')
+    return
+  endif
+
+  let mode = 'YR'
+  call submode#enter_with(mode, 'n', '', g:hopper_prefix.'y', '<nop>')
+  call submode#map(mode, 'n', '', 'j', ":<C-U>YRReplace '-1', P<cr>")
+  call submode#map(mode, 'n', '', 'k', ":<C-U>YRReplace '1', p<cr>")
+endfunction
