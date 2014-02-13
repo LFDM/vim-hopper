@@ -66,18 +66,22 @@ function! hopper#prev_with_same_indentation()
   call hopper#search_with_same_indentation('b')
 endfunction
 
+function! hopper#map_movement_key(mode, key, move)
+  call submode#map(a:mode, 'n', '', a:key, ':call hopper#'.a:move.'()<cr>')
+endfunction
+
 function! hopper#define_movement_mode()
   let mode_name = b:hopper_movement_mode_name.'-hopper'
   call submode#enter_with(mode_name, 'n', '', g:hopper_prefix.'j', ':call hopper#next()<cr>')
   call submode#enter_with(mode_name, 'n', '', g:hopper_prefix.'k', ':call hopper#prev()<cr>')
-  call submode#map(mode_name, 'n', '', 'j', ':call hopper#next()<cr>')
-  call submode#map(mode_name, 'n', '', 'k', ':call hopper#prev()<cr>')
-  call submode#map(mode_name, 'n', '', 'h', ':call hopper#prev_outer()<cr>')
-  call submode#map(mode_name, 'n', '', 'l', ':call hopper#next_inner()<cr>')
-  call submode#map(mode_name, 'n', '', 'J', ':call hopper#next_with_same_indentation()<cr>')
-  call submode#map(mode_name, 'n', '', 'K', ':call hopper#prev_with_same_indentation()<cr>')
-  call submode#map(mode_name, 'n', '', 'b', ':call hopper#go_to_last_hop()<cr>')
-  call submode#map(mode_name, 'n', '', 'f', ':call hopper#go_to_last_hop()<cr>')
+  call hopper#map_movement_key(mode_name, 'j', 'next')
+  call hopper#map_movement_key(mode_name, 'k', 'prev')
+  call hopper#map_movement_key(mode_name, 'h', 'prev_outer')
+  call hopper#map_movement_key(mode_name, 'l', 'next_inner')
+  call hopper#map_movement_key(mode_name, 'J', 'next_with_same_indentation')
+  call hopper#map_movement_key(mode_name, 'K', 'prev_with_same_indentation')
+  call hopper#map_movement_key(mode_name, 'b', 'go_to_last_hop')
+  call hopper#map_movement_key(mode_name, 'f', 'go_to_last_hop')
 
   if g:loaded_matchit
     call submode#map(mode_name, 'n', '', 'e', ':call hopper#go_to_end()<cr>')
