@@ -70,14 +70,14 @@ function! hopper#map_movement_key(mode, key, move)
   call submode#map(a:mode, 'n', '', a:key, ':call hopper#'.a:move.'()<cr>')
 endfunction
 
-function! hopper#map_enter_key(mode, key, move)
+function! hopper#map_movement_enter_key(mode, key, move)
   call submode#enter_with(a:mode, 'n', 'b', g:hopper_prefix.a:key, ':call hopper#'.a:move.'()<cr>')
 endfunction
 
 function! hopper#define_movement_mode()
   let mode_name = b:hopper_movement_mode_name.'-hopper'
-  call hopper#map_enter_key(mode_name, 'j', 'next')
-  call hopper#map_enter_key(mode_name, 'k', 'prev')
+  call hopper#map_movement_enter_key(mode_name, 'j', 'next')
+  call hopper#map_movement_enter_key(mode_name, 'k', 'prev')
   call hopper#map_movement_key(mode_name, 'j', 'next')
   call hopper#map_movement_key(mode_name, 'k', 'prev')
   call hopper#map_movement_key(mode_name, 'h', 'prev_outer')
@@ -88,7 +88,7 @@ function! hopper#define_movement_mode()
   call hopper#map_movement_key(mode_name, 'f', 'go_to_last_hop')
 
   if g:loaded_matchit
-    call submode#map(mode_name, 'n', '', 'e', ':call hopper#go_to_end()<cr>')
+    call hopper#map_movement_key(mode_name, 'e', 'go_to_end')
   endif
 endfunction
 
