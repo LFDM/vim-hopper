@@ -7,7 +7,9 @@ if !exists('g:hopper_prefix')
 endif
 
 if !exists('g:hopper_filetype_modes')
-  let g:hopper_filetype_modes = ['bash', 'python', 'ruby', 'snippets', 'sh', 'vim', 'zsh']
+  let g:hopper_filetype_modes = [
+        \'bash', 'python', 'ruby', 'snippets', 'sh', 'vim', 'xml', 'zsh'
+        \]
 endif
 
 if !exists('g:hopper_support_modes')
