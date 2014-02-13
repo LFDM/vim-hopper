@@ -72,8 +72,8 @@ endfunction
 
 function! hopper#define_movement_mode()
   let mode_name = b:hopper_movement_mode_name.'-hopper'
-  call submode#enter_with(mode_name, 'n', '', g:hopper_prefix.'j', ':call hopper#next()<cr>')
-  call submode#enter_with(mode_name, 'n', '', g:hopper_prefix.'k', ':call hopper#prev()<cr>')
+  call submode#enter_with(mode_name, 'n', 'b', g:hopper_prefix.'j', ':call hopper#next()<cr>')
+  call submode#enter_with(mode_name, 'n', 'b', g:hopper_prefix.'k', ':call hopper#prev()<cr>')
   call hopper#map_movement_key(mode_name, 'j', 'next')
   call hopper#map_movement_key(mode_name, 'k', 'prev')
   call hopper#map_movement_key(mode_name, 'h', 'prev_outer')
