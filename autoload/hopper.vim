@@ -117,21 +117,24 @@ endfunction
 
 function! hopper#load_buffer()
   let mode = 'buffer-hopper'
-  call submode#enter_with(mode, 'n', '', g:hopper_prefix.'b', '<nop>')
-  call submode#map(mode, 'n', '', 'j', ':bnext<cr>')
-  call submode#map(mode, 'n', '', 'k', ':bprev<cr>')
-  call submode#map(mode, 'n', '', 'h', ':bfirst<cr>')
-  call submode#map(mode, 'n', '', 'l', ':blast<cr>')
-  call submode#map(mode, 'n', '', 'w', ':w<cr>')
-  call submode#map(mode, 'n', '', 'x', ':w<cr>:bd<cr>')
-  call submode#map(mode, 'n', '', 'q', ':bd<cr>')
+  let mappings = {
+        \  'j' : ':bnext<cr>',
+        \  'k' : ':bprev<cr>',
+        \  'h' : ':bfirst<cr>',
+        \  'l' : ':blast<cr>',
+        \  'w' : ':w<cr>',
+        \  'x' : ':w<cr>:bd<cr>',
+        \  'q' : ':bd<cr>',
+        \}
 
   if exists('g:loaded_ctrlp')
     " it probably would be helpful to enter the submode afterwards again
     " or probably not because that buffer should be where you want to go
     " anyway
-    call submode#map(mode, 'n', '', 'f', ':CtrlPBuffer<cr>')
+    let mappings['f'] = ':CtrlPBuffer<cr>'
   endif
+
+  call hopper#create_mode(mode, 'b', 'n', '', mappings)
 endfunction
 
 function! hopper#load_tab()
@@ -209,4 +212,15 @@ function! hopper#load_yankring()
   call submode#map(mode, 'n', '', 'k', ":<C-U>YRReplace '1', p<cr>")
   call submode#map(mode, 'n', '', 's', ':YRShow<cr>')
   call submode#map(mode, 'n', '', 'f', ':YRSearch<cr>')
+endfunction
+
+function! hopper#create_mode(mode_name, enter_key, mode, opts, mappings)
+  call submode#enter_with(a:mode_name, a:mode, a:opts, g:hopper_prefix.a:enter_key, '<nop>')
+  call hopper#add_mappings(a:mode_name, a:mode, a:opts, a:mappings)
+endfunction
+
+function! hopper#add_mappings(mode_name, mode, opts, mappings)
+  for [key, cmd] in items(a:mappings)
+    call submode#map(a:mode_name, a:mode, a:opts, key, cmd)
+  endfor
 endfunction
