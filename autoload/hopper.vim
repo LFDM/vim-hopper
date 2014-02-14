@@ -128,6 +128,8 @@ function! hopper#load_buffer()
 
   if exists('g:loaded_ctrlp')
     " it probably would be helpful to enter the submode afterwards again
+    " or probably not because that buffer should be where you want to go
+    " anyway
     call submode#map(mode, 'n', '', 'f', ':CtrlPBuffer<cr>')
   endif
 endfunction
@@ -143,8 +145,6 @@ function! hopper#load_tab()
   call submode#map(mode, 'n', '', 'c', ':tabclose<cr>')
 endfunction
 
-function! hopper#load_gitgutter()
-  if !exists('g:loaded_gitgutter')
 function! hopper#load_tag()
   let mode = 'tag-hopper'
   call submode#enter_with(mode, 'n', '', g:hopper_prefix.'t', '<nop>')
@@ -163,6 +163,8 @@ function! hopper#prev_tag()
   try | tprev | catch | tlast | endtry
 endfunction
 
+function! hopper#load_gitgutter()
+  if !exists('g:loaded_gitgutter')
     return
   endif
 
