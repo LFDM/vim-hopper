@@ -115,6 +115,16 @@ function! hopper#load_exchange()
   call submode#map(mode, 'x', 'r', 'k', '[egv')
 endfunction
 
+function! hopper#load_buffer()
+  let mode = 'buffer-hopper'
+  call submode#enter_with(mode, 'n', '', g:hopper_prefix.'b', '<nop>')
+  call submode#map(mode, 'n', '', 'j', ':bnext<cr>')
+  call submode#map(mode, 'n', '', 'k', ':bprev<cr>')
+  call submode#map(mode, 'n', '', 'w', ':w<cr>')
+  call submode#map(mode, 'n', '', 'x', ':w<cr>:bd<cr>')
+  call submode#map(mode, 'n', '', 'q', ':bd<cr>')
+endfunction
+
 function! hopper#load_gitgutter()
   if !exists('g:loaded_gitgutter')
     return
