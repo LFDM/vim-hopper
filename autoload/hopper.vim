@@ -209,7 +209,7 @@ function! hopper#load_gitgutter()
   let enter_key = 'g'
   call submode#enter_with(mode, 'n', '', g:hopper_prefix.'g', '<nop>')
 
-  let gitgutter_map = {
+  let mappings = {
         \ 'j' : 'Next',
         \ 'k' : 'Prev',
         \ 'a' : 'Stage',
@@ -218,9 +218,7 @@ function! hopper#load_gitgutter()
         \ 'r' : 'Revert',
   \}
 
-  let mappings = {}
-
-  for [k, c] in items(gitgutter_map)
+  for [k, c] in items(mappings)
     let mappings[k] = ':GitGutter'.c.'Hunk<cr>'
   endfor
 
