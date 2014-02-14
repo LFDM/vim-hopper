@@ -145,6 +145,24 @@ endfunction
 
 function! hopper#load_gitgutter()
   if !exists('g:loaded_gitgutter')
+function! hopper#load_tag()
+  let mode = 'tag-hopper'
+  call submode#enter_with(mode, 'n', '', g:hopper_prefix.'t', '<nop>')
+  call submode#map(mode, 'n', '', 'j', ':call hopper#next_tag()<cr>')
+  call submode#map(mode, 'n', '', 'k', ':call hopper#prev_tag()<cr>')
+  call submode#map(mode, 'n', '', 'h', ':tfirst<cr>')
+  call submode#map(mode, 'n', '', 'l', ':tlast<cr>')
+  call submode#map(mode, 'n', '', 'f', '<c-]>')
+endfunction
+
+function! hopper#next_tag()
+  try | tnext | catch | tfirst | endtry
+endfunction
+
+function! hopper#prev_tag()
+  try | tprev | catch | tlast | endtry
+endfunction
+
     return
   endif
 
