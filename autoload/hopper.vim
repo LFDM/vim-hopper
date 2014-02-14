@@ -136,4 +136,6 @@ function! hopper#load_yankring()
   call submode#enter_with(mode, 'n', '', g:hopper_prefix.'y', '<nop>')
   call submode#map(mode, 'n', '', 'j', ":<C-U>YRReplace '-1', P<cr>")
   call submode#map(mode, 'n', '', 'k', ":<C-U>YRReplace '1', p<cr>")
+  call submode#map(mode, 'n', '', 's', ':YRShow<cr>')
+  call submode#map(mode, 'n', '', 'f', ':YRSearch<cr>')
 endfunction
