@@ -132,6 +132,17 @@ function! hopper#load_buffer()
   endif
 endfunction
 
+function! hopper#load_tab()
+  let mode = 'tab-hopper'
+  call submode#enter_with(mode, 'n', '', g:hopper_prefix.'tb', '<nop>')
+  call submode#map(mode, 'n', '', 'j', ':tabnext<cr>')
+  call submode#map(mode, 'n', '', 'k', ':tabprev<cr>')
+  call submode#map(mode, 'n', '', 'h', ':tabfirst<cr>')
+  call submode#map(mode, 'n', '', 'l', ':tablast<cr>')
+  call submode#map(mode, 'n', '', 'n', ':tabnew<cr>')
+  call submode#map(mode, 'n', '', 'c', ':tabclose<cr>')
+endfunction
+
 function! hopper#load_gitgutter()
   if !exists('g:loaded_gitgutter')
     return
