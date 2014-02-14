@@ -155,7 +155,7 @@ function! hopper#load_yankring()
     return
   endif
 
-  let mode = 'YR'
+  let mode = 'yankring'
   call submode#enter_with(mode, 'n', '', g:hopper_prefix.'y', '<nop>')
   call submode#map(mode, 'n', '', 'j', ":<C-U>YRReplace '-1', P<cr>")
   call submode#map(mode, 'n', '', 'k', ":<C-U>YRReplace '1', p<cr>")
