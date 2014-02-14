@@ -1,3 +1,7 @@
+"""""""""""""""""""""
+"  Movement hopper  "
+"""""""""""""""""""""
+
 function! hopper#search(direction, ws)
   call hopper#save_position()
   let flags = a:direction.'W'
@@ -91,6 +95,11 @@ function! hopper#define_movement_mode()
     call hopper#map_movement_key(mode_name, 'e', 'go_to_end')
   endif
 endfunction
+
+
+"""""""""""""""""""""
+"  Support hoppers  "
+"""""""""""""""""""""
 
 function! hopper#load_gitgutter()
   if !exists('g:loaded_gitgutter')
