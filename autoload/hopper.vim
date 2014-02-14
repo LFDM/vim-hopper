@@ -201,9 +201,9 @@ function! hopper#load_speed()
         \ 'J' : '10j',
         \ 'K' : '10k',
         \ 'h' : '5h',
-        \ 'l' : '5l'
+        \ 'l' : '5l',
         \ 'H' : '10h',
-        \ 'L' : '10l'
+        \ 'L' : '10l',
   \}
 
   call hopper#create_mode(mode, 'nx', '', enter_key, mappings)
