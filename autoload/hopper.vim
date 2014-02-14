@@ -123,6 +123,11 @@ function! hopper#load_buffer()
   call submode#map(mode, 'n', '', 'w', ':w<cr>')
   call submode#map(mode, 'n', '', 'x', ':w<cr>:bd<cr>')
   call submode#map(mode, 'n', '', 'q', ':bd<cr>')
+
+  if exists('g:loaded_ctrlp')
+    " it probably would be helpful to enter the submode afterwards again
+    call submode#map(mode, 'n', '', 'f', ':CtrlPBuffer<cr>')
+  endif
 endfunction
 
 function! hopper#load_gitgutter()
