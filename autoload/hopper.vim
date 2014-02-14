@@ -1,6 +1,6 @@
-"""""""""""""""""""""
-"  Movement hopper  "
-"""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                             Movement hopper                             "
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 function! hopper#search(direction, ws)
   call hopper#save_position()
@@ -97,23 +97,14 @@ function! hopper#define_movement_mode()
 endfunction
 
 
-"""""""""""""""""""""
-"  Support hoppers  "
-"""""""""""""""""""""
 
-function! hopper#load_exchange()
-  if !exists('g:loaded_unimpaired')
-    return
-  end
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                             Support hoppers                             "
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-  let mode = 'exchange'
-  call submode#enter_with(mode, 'nx', '', g:hopper_prefix.'e', '<nop>')
-  call submode#map(mode, 'n', 'r', 'j', '<Plug>unimpairedMoveDown')
-  call submode#map(mode, 'n', 'r', 'k', '<Plug>unimpairedMoveUp')
-  " investigate why this won't work if it's mapped to the plug
-  call submode#map(mode, 'x', 'r', 'j', ']egv')
-  call submode#map(mode, 'x', 'r', 'k', '[egv')
-endfunction
+""""""""""""
+"  buffer  "
+""""""""""""
 
 function! hopper#load_buffer()
   let mode = 'buffer-hopper'
@@ -138,6 +129,11 @@ function! hopper#load_buffer()
   call hopper#create_mode(mode, 'n', '', enter_key, mappings)
 endfunction
 
+
+"""""""""
+"  tab  "
+"""""""""
+
 function! hopper#load_tab()
   let mode = 'tab-hopper'
   let enter_key = 'tb'
@@ -152,6 +148,11 @@ function! hopper#load_tab()
 
   call hopper#create_mode(mode, 'n', '', enter_key, mappings)
 endfunction
+
+
+"""""""""
+"  tag  "
+"""""""""
 
 function! hopper#load_tag()
   let mode = 'tag-hopper'
@@ -174,6 +175,30 @@ endfunction
 function! hopper#prev_tag()
   try | tprev | catch | tlast | endtry
 endfunction
+
+
+""""""""""""""
+"  exchange  "
+""""""""""""""
+
+function! hopper#load_exchange()
+  if !exists('g:loaded_unimpaired')
+    return
+  end
+
+  let mode = 'exchange'
+  call submode#enter_with(mode, 'nx', '', g:hopper_prefix.'e', '<nop>')
+  call submode#map(mode, 'n', 'r', 'j', '<Plug>unimpairedMoveDown')
+  call submode#map(mode, 'n', 'r', 'k', '<Plug>unimpairedMoveUp')
+  " investigate why this won't work if it's mapped to the plug
+  call submode#map(mode, 'x', 'r', 'j', ']egv')
+  call submode#map(mode, 'x', 'r', 'k', '[egv')
+endfunction
+
+
+"""""""""""""""
+"  gitgutter  "
+"""""""""""""""
 
 function! hopper#load_gitgutter()
   if !exists('g:loaded_gitgutter')
@@ -207,6 +232,11 @@ function! hopper#load_gitgutter()
   call hopper#create_mode(mode, 'n', '', enter_key, mappings)
 endfunction
 
+
+"""""""""""
+"  speed  "
+"""""""""""
+
 function! hopper#load_speed()
   let mode = 'speed-hooper'
   let enter_key = 's'
@@ -224,6 +254,11 @@ function! hopper#load_speed()
   call hopper#create_mode(mode, 'nx', '', enter_key, mappings)
 endfunction
 
+
+""""""""""""""
+"  yankring  "
+""""""""""""""
+
 function! hopper#load_yankring()
   if !exists('g:loaded_yankring')
     return
@@ -240,6 +275,12 @@ function! hopper#load_yankring()
 
   call hopper#create_mode(mode, 'n', '', enter_key, mappings)
 endfunction
+
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                            helper functions                             "
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 function! hopper#create_mode(mode_name, mode, opts, enter_key, mappings)
   call submode#enter_with(a:mode_name, a:mode, a:opts, g:hopper_prefix.a:enter_key, '<nop>')
