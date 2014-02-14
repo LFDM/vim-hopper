@@ -117,15 +117,16 @@ endfunction
 
 function! hopper#load_buffer()
   let mode = 'buffer-hopper'
+  let enter_key = 'b'
   let mappings = {
-        \  'j' : ':bnext<cr>',
-        \  'k' : ':bprev<cr>',
-        \  'h' : ':bfirst<cr>',
-        \  'l' : ':blast<cr>',
-        \  'w' : ':w<cr>',
-        \  'x' : ':w<cr>:bd<cr>',
-        \  'q' : ':bd<cr>',
-        \}
+        \ 'j' : ':bnext<cr>',
+        \ 'k' : ':bprev<cr>',
+        \ 'h' : ':bfirst<cr>',
+        \ 'l' : ':blast<cr>',
+        \ 'w' : ':w<cr>',
+        \ 'x' : ':w<cr>:bd<cr>',
+        \ 'q' : ':bd<cr>',
+  \}
 
   if exists('g:loaded_ctrlp')
     " it probably would be helpful to enter the submode afterwards again
@@ -134,28 +135,36 @@ function! hopper#load_buffer()
     let mappings['f'] = ':CtrlPBuffer<cr>'
   endif
 
-  call hopper#create_mode(mode, 'b', 'n', '', mappings)
+  call hopper#create_mode(mode, 'n', '', enter_key, mappings)
 endfunction
 
 function! hopper#load_tab()
   let mode = 'tab-hopper'
-  call submode#enter_with(mode, 'n', '', g:hopper_prefix.'tb', '<nop>')
-  call submode#map(mode, 'n', '', 'j', ':tabnext<cr>')
-  call submode#map(mode, 'n', '', 'k', ':tabprev<cr>')
-  call submode#map(mode, 'n', '', 'h', ':tabfirst<cr>')
-  call submode#map(mode, 'n', '', 'l', ':tablast<cr>')
-  call submode#map(mode, 'n', '', 'n', ':tabnew<cr>')
-  call submode#map(mode, 'n', '', 'c', ':tabclose<cr>')
+  let enter_key = 'tb'
+  let mappings = {
+        \  'j' : ':tabnext<cr>',
+        \  'k' : ':tabprev<cr>',
+        \  'h' : ':tabfirst<cr>',
+        \  'l' : ':tablast<cr>',
+        \  'n' : ':tabnew<cr>',
+        \  'c' : ':tabclose<cr>',
+  \}
+
+  call hopper#create_mode(mode, 'n', '', enter_key, mappings)
 endfunction
 
 function! hopper#load_tag()
   let mode = 'tag-hopper'
-  call submode#enter_with(mode, 'n', '', g:hopper_prefix.'t', '<nop>')
-  call submode#map(mode, 'n', '', 'j', ':call hopper#next_tag()<cr>')
-  call submode#map(mode, 'n', '', 'k', ':call hopper#prev_tag()<cr>')
-  call submode#map(mode, 'n', '', 'h', ':tfirst<cr>')
-  call submode#map(mode, 'n', '', 'l', ':tlast<cr>')
-  call submode#map(mode, 'n', '', 'f', '<c-]>')
+  let enter_key = 't'
+  let mappings = {
+        \  'j' : ':call hopper#next_tag()<cr>',
+        \  'k' : ':call hopper#prev_tag()<cr>',
+        \  'h' : ':tfirst<cr>',
+        \  'l' : ':tlast<cr>',
+        \  'f' : '<c-]>',
+  \}
+
+  call hopper#create_mode(mode, 'n', '', enter_key, mappings)
 endfunction
 
 function! hopper#next_tag()
@@ -172,6 +181,7 @@ function! hopper#load_gitgutter()
   endif
 
   let mode = 'gitgutter'
+  let enter_key = 'g'
   call submode#enter_with(mode, 'n', '', g:hopper_prefix.'g', '<nop>')
 
   let gitgutter_map = {
@@ -183,13 +193,18 @@ function! hopper#load_gitgutter()
         \ 'r' : 'Revert',
   \}
 
+  let mappings = {}
+
   for [k, c] in items(gitgutter_map)
-    call submode#map(mode, 'n', '', k, ':GitGutter'.c.'Hunk<cr>')
+    let mappings[k] = ':GitGutter'.c.'Hunk<cr>'
   endfor
 
   if exists('g:loaded_fugitive')
-    call submode#map(mode, 'n', '', 'c', ':Gcommit<cr>')
+    let mappings['c'] = ':Gcommit<cr>'
+    "call submode#map(mode, 'n', '', 'c', ':Gcommit<cr>')
   endif
+
+  call hopper#create_mode(mode, 'n', '', enter_key, mappings)
 endfunction
 
 function! hopper#load_speed()
@@ -215,11 +230,15 @@ function! hopper#load_yankring()
   endif
 
   let mode = 'yankring'
-  call submode#enter_with(mode, 'n', '', g:hopper_prefix.'y', '<nop>')
-  call submode#map(mode, 'n', '', 'j', ":<C-U>YRReplace '-1', P<cr>")
-  call submode#map(mode, 'n', '', 'k', ":<C-U>YRReplace '1', p<cr>")
-  call submode#map(mode, 'n', '', 's', ':YRShow<cr>')
-  call submode#map(mode, 'n', '', 'f', ':YRSearch<cr>')
+  let enter_key = 'y'
+  let mappings = {
+        \  'j' : ":<C-U>YRReplace '-1', P<cr>",
+        \  'k' : ":<C-U>YRReplace '1', p<cr>",
+        \  's' : ':YRShow<cr>',
+        \  'f' : ':YRSearch<cr>',
+  \}
+
+  call hopper#create_mode(mode, 'n', '', enter_key, mappings)
 endfunction
 
 function! hopper#create_mode(mode_name, mode, opts, enter_key, mappings)
