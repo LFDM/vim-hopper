@@ -194,11 +194,19 @@ endfunction
 
 function! hopper#load_speed()
   let mode = 'speed-hooper'
-  call submode#enter_with(mode, 'nx', '', g:hopper_prefix.'s', '<nop>')
-  call submode#map(mode, 'nx', '', 'j', '5j')
-  call submode#map(mode, 'nx', '', 'k', '5k')
-  call submode#map(mode, 'nx', '', 'J', '10j')
-  call submode#map(mode, 'nx', '', 'K', '10k')
+  let enter_key = 's'
+  let mappings = {
+        \ 'j' : '5j',
+        \ 'k' : '5k',
+        \ 'J' : '10j',
+        \ 'K' : '10k',
+        \ 'h' : '5h',
+        \ 'l' : '5l'
+        \ 'H' : '10h',
+        \ 'L' : '10l'
+  \}
+
+  call hopper#create_mode(mode, 'nx', '', enter_key, mappings)
 endfunction
 
 function! hopper#load_yankring()
