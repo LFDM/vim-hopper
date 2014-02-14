@@ -222,7 +222,7 @@ function! hopper#load_yankring()
   call submode#map(mode, 'n', '', 'f', ':YRSearch<cr>')
 endfunction
 
-function! hopper#create_mode(mode_name, enter_key, mode, opts, mappings)
+function! hopper#create_mode(mode_name, mode, opts, enter_key, mappings)
   call submode#enter_with(a:mode_name, a:mode, a:opts, g:hopper_prefix.a:enter_key, '<nop>')
   call hopper#add_mappings(a:mode_name, a:mode, a:opts, a:mappings)
 endfunction
