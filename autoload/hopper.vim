@@ -236,7 +236,7 @@ endfunction
 """""""""""
 
 function! hopper#load_speed()
-  let mode = 'speed-hooper'
+  let mode = 'speed-hopper'
   let enter_key = 's'
   let mappings = {
         \ 'j' : '5j',
