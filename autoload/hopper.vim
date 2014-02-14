@@ -193,7 +193,7 @@ function! hopper#load_gitgutter()
 endfunction
 
 function! hopper#load_speed()
-  let mode = 'speedjumping'
+  let mode = 'speed-hooper'
   call submode#enter_with(mode, 'nx', '', g:hopper_prefix.'s', '<nop>')
   call submode#map(mode, 'nx', '', 'j', '5j')
   call submode#map(mode, 'nx', '', 'k', '5k')
