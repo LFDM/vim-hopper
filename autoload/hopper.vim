@@ -101,6 +101,20 @@ endfunction
 "  Support hoppers  "
 """""""""""""""""""""
 
+function! hopper#load_exchange()
+  if !exists('g:loaded_unimpaired')
+    return
+  end
+
+  let mode = 'exchange'
+  call submode#enter_with(mode, 'nx', '', g:hopper_prefix.'e', '<nop>')
+  call submode#map(mode, 'n', 'r', 'j', '<Plug>unimpairedMoveDown')
+  call submode#map(mode, 'n', 'r', 'k', '<Plug>unimpairedMoveUp')
+  " investigate why this won't work if it's mapped to the plug
+  call submode#map(mode, 'x', 'r', 'j', ']egv')
+  call submode#map(mode, 'x', 'r', 'k', '[egv')
+endfunction
+
 function! hopper#load_gitgutter()
   if !exists('g:loaded_gitgutter')
     return

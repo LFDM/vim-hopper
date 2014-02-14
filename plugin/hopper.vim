@@ -14,7 +14,7 @@ if !exists('g:hopper_filetype_modes')
 endif
 
 if !exists('g:hopper_support_modes')
-  let g:hopper_support_modes = ['gitgutter', 'speed', 'yankring']
+  let g:hopper_support_modes = ['exchange', 'gitgutter', 'speed', 'yankring']
 endif
 
 if !exists('g:hopper_center_on_jump')
@@ -54,3 +54,4 @@ au Filetype * call hopper#load_movement_mode()
 call hopper#load_support_modes()
 
 let g:loaded_hopper = 1
+
