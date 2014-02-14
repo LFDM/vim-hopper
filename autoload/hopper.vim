@@ -143,11 +143,11 @@ endfunction
 
 function! hopper#load_speed()
   let mode = 'speedjumping'
-  call submode#enter_with(mode, 'nv', '', g:hopper_prefix.'s', '<nop>')
-  call submode#map(mode, 'nv', '', 'j', '5j')
-  call submode#map(mode, 'nv', '', 'k', '5k')
-  call submode#map(mode, 'nv', '', 'J', '10j')
-  call submode#map(mode, 'nv', '', 'K', '10k')
+  call submode#enter_with(mode, 'nx', '', g:hopper_prefix.'s', '<nop>')
+  call submode#map(mode, 'nx', '', 'j', '5j')
+  call submode#map(mode, 'nx', '', 'k', '5k')
+  call submode#map(mode, 'nx', '', 'J', '10j')
+  call submode#map(mode, 'nx', '', 'K', '10k')
 endfunction
 
 function! hopper#load_yankring()
