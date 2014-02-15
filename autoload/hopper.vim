@@ -70,6 +70,12 @@ function! hopper#prev_with_same_indentation()
   call hopper#search_with_same_indentation('b')
 endfunction
 
+function! hopper#add_movement_mappings(mode, mappings)
+  for [key, cmd] in items(a:mappings)
+    call hopper#map_movement_key(a:mode, key, cmd)
+  endfor
+endfunction
+
 function! hopper#map_movement_key(mode, key, move)
   call submode#map(a:mode, 'n', '', a:key, ':call hopper#'.a:move.'()<cr>')
 endfunction
@@ -80,20 +86,24 @@ endfunction
 
 function! hopper#define_movement_mode()
   let mode_name = b:hopper_movement_mode_name.'-hopper'
-  call hopper#map_movement_enter_key(mode_name, 'j', 'next')
-  call hopper#map_movement_enter_key(mode_name, 'k', 'prev')
-  call hopper#map_movement_key(mode_name, 'j', 'next')
-  call hopper#map_movement_key(mode_name, 'k', 'prev')
-  call hopper#map_movement_key(mode_name, 'h', 'prev_outer')
-  call hopper#map_movement_key(mode_name, 'l', 'next_inner')
-  call hopper#map_movement_key(mode_name, 'J', 'next_with_same_indentation')
-  call hopper#map_movement_key(mode_name, 'K', 'prev_with_same_indentation')
-  call hopper#map_movement_key(mode_name, 'b', 'go_to_last_hop')
-  call hopper#map_movement_key(mode_name, 'f', 'go_to_last_hop')
+  let mappings = {
+        \ 'j' : 'next',
+        \ 'k' : 'prev',
+        \ 'h' : 'prev_outer',
+        \ 'l' : 'next_inner',
+        \ 'J' : 'next_with_same_indentation',
+        \ 'K' : 'prev_with_same_indentation',
+        \ 'b' : 'go_to_last_hop',
+        \ 'f' : 'go_to_last_hop',
+  \}
 
   if exists('g:loaded_matchit')
-    call hopper#map_movement_key(mode_name, 'e', 'go_to_end')
+    let mappings['e'] = 'go_to_end'
   endif
+
+  call hopper#map_movement_enter_key(mode_name, 'j', 'next')
+  call hopper#map_movement_enter_key(mode_name, 'k', 'prev')
+  call hopper#add_movement_mappings(mode_name, mappings)
 endfunction
 
 
