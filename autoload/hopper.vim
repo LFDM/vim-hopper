@@ -222,7 +222,6 @@ function! hopper#load_gitgutter()
 
   if exists('g:loaded_fugitive')
     let mappings['c'] = ':Gcommit<cr>'
-    "call submode#map(mode, 'n', '', 'c', ':Gcommit<cr>')
   endif
 
   call hopper#create_mode(mode, 'n', '', enter_key, mappings)
