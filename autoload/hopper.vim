@@ -211,12 +211,12 @@ function! hopper#load_location()
   let mappings = {
         \  'j' : ':call hopper#cycle_next("l")<cr>',
         \  'k' : ':call hopper#cycle_prev("l")<cr>',
-        \  'J' : ':lnfile<cr>',
-        \  'K' : ':lpfile<cr>',
+        \  'J' : ':call hopper#guard("lnfile", "Last file reached")<cr>',
+        \  'K' : ':call hopper#guard("lpfile", "First file reached")<cr>',
         \  'h' : ':lfirst<cr>',
         \  'l' : ':llast<cr>',
-        \  '<c-j>' : ':lnewer<cr>',
-        \  '<c-k>' : ':lolder<cr>',
+        \  '<c-j>' : ':call hopper#guard("lnewer")<cr>',
+        \  '<c-k>' : ':call hopper#guard("lolder")<cr>',
   \}
 
   call hopper#create_mode(mode, 'n', '', enter_key, mappings)
@@ -348,6 +348,5 @@ function! hopper#guard(cmd, ...)
   catch
     let message = a:0 == 0 ? '' : a:1
     echo message
-    return 0
   endtry
 endfunction
