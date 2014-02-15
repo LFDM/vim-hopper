@@ -188,8 +188,24 @@ function! hopper#load_quickfix()
   call hopper#create_mode(mode, 'n', '', enter_key, mappings)
 endfunction
 
-function! hopper#prev_tag()
-  try | tprev | catch | tlast | endtry
+
+""""""""""""""
+"  location  "
+""""""""""""""
+
+function! hopper#load_location()
+  let mode = 'loc-hopper'
+  let enter_key = 'l'
+  let mappings = {
+        \  'j' : ':call hopper#cycle_next("l")<cr>',
+        \  'k' : ':call hopper#cycle_prev("l")<cr>',
+        \  'J' : ':lnfile<cr>',
+        \  'K' : ':lpfile<cr>',
+        \  'h' : ':lfirst<cr>',
+        \  'l' : ':llast<cr>',
+  \}
+
+  call hopper#create_mode(mode, 'n', '', enter_key, mappings)
 endfunction
 
 
@@ -221,7 +237,7 @@ function! hopper#load_gitgutter()
     return
   endif
 
-  let mode = 'gitgutter'
+  let mode = 'gutter-hopper'
   let enter_key = 'g'
   let mappings = {
         \ 'j' : 'Next',
