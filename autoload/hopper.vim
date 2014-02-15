@@ -187,7 +187,7 @@ function! hopper#load_exchange()
   end
 
   let mode = 'exchange'
-  call submode#enter_with(mode, 'nx', '', g:hopper_prefix.'e', '<nop>')
+  call submode#enter_with(mode, 'nx', '', g:hopper_prefix.'e')
   call submode#map(mode, 'n', 'r', 'j', '<Plug>unimpairedMoveDown')
   call submode#map(mode, 'n', 'r', 'k', '<Plug>unimpairedMoveUp')
   " investigate why this won't work if it's mapped to the plug
@@ -207,8 +207,6 @@ function! hopper#load_gitgutter()
 
   let mode = 'gitgutter'
   let enter_key = 'g'
-  call submode#enter_with(mode, 'n', '', g:hopper_prefix.'g', '<nop>')
-
   let mappings = {
         \ 'j' : 'Next',
         \ 'k' : 'Prev',
@@ -281,7 +279,7 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 function! hopper#create_mode(mode_name, mode, opts, enter_key, mappings)
-  call submode#enter_with(a:mode_name, a:mode, a:opts, g:hopper_prefix.a:enter_key, '<nop>')
+  call submode#enter_with(a:mode_name, a:mode, a:opts, g:hopper_prefix.a:enter_key)
   call hopper#add_mappings(a:mode_name, a:mode, a:opts, a:mappings)
 endfunction
 
