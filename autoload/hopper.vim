@@ -189,12 +189,12 @@ function! hopper#load_quickfix()
   let mappings = {
         \  'j' : ':call hopper#cycle_next("c")<cr>',
         \  'k' : ':call hopper#cycle_prev("c")<cr>',
-        \  'J' : ':cnfile<cr>',
-        \  'K' : ':cpfile<cr>',
+        \  'J' : ':call hopper#guard("cnfile", "Last file reached")<cr>',
+        \  'K' : ':call hopper#guard("cpfile", "First file reached")<cr>',
         \  'h' : ':cfirst<cr>',
         \  'l' : ':clast<cr>',
-        \  '<c-j>' : ':cnewer<cr>',
-        \  '<c-k>' : ':colder<cr>',
+        \  '<c-j>' : ':call hopper#guard("cnewer")<cr>',
+        \  '<c-k>' : ':call hopper#guard("colder")<cr>',
   \}
 
   call hopper#create_mode(mode, 'n', '', enter_key, mappings)
@@ -340,4 +340,14 @@ endfunction
 
 function! hopper#cycle_prev(cmd)
   try | exec a:cmd.'prev' | catch | exec a:cmd.'last' | endtry
+endfunction
+
+function! hopper#guard(cmd, ...)
+  try
+    exec a:cmd
+  catch
+    let message = a:0 == 0 ? '' : a:1
+    echo message
+    return 0
+  endtry
 endfunction
