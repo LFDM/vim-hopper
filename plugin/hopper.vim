@@ -25,7 +25,7 @@ if !exists('g:hopper_center_on_jump')
 endif
 
 if !exists('g:submode_timeoutlen')
-  let g:submode_timeoutlen = 30000
+  let g:submode_timeoutlen = 100000
 endif
 
 if !exists('g:submode_keep_leaving_key')
