@@ -193,6 +193,8 @@ function! hopper#load_quickfix()
         \  'K' : ':cpfile<cr>',
         \  'h' : ':cfirst<cr>',
         \  'l' : ':clast<cr>',
+        \  '<c-j>' : ':cnewer<cr>',
+        \  '<c-k>' : ':colder<cr>',
   \}
 
   call hopper#create_mode(mode, 'n', '', enter_key, mappings)
@@ -213,6 +215,8 @@ function! hopper#load_location()
         \  'K' : ':lpfile<cr>',
         \  'h' : ':lfirst<cr>',
         \  'l' : ':llast<cr>',
+        \  '<c-j>' : ':lnewer<cr>',
+        \  '<c-k>' : ':lolder<cr>',
   \}
 
   call hopper#create_mode(mode, 'n', '', enter_key, mappings)
