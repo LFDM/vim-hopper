@@ -127,6 +127,7 @@ function! hopper#load_buffer()
         \ 'w' : ':w<cr>',
         \ 'x' : ':w<cr>:bd<cr>',
         \ 'q' : ':bd<cr>',
+        \ 'm' : ':call hopper#guard("bmodified", "No modified buffer present")<cr>'
   \}
 
   if exists('g:loaded_ctrlp')
