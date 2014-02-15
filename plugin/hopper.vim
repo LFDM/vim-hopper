@@ -27,10 +27,6 @@ if !exists('g:submode_timeoutlen')
   let g:submode_timeoutlen = 30000
 endif
 
-if !exists('g:submode_always_show_submode')
-  let g:submode_always_show_submode = 1
-endif
-
 if !exists('g:submode_keep_leaving_key')
   let g:submode_keep_leaving_key = 1
 endif
