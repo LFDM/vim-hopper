@@ -15,7 +15,8 @@ endif
 
 if !exists('g:hopper_support_modes')
   let g:hopper_support_modes = [
-        \'buffer', 'exchange', 'gitgutter', 'speed', 'tab', 'tag', 'yankring'
+        \'buffer', 'exchange', 'gitgutter', 'location', 'quickfix',
+        \'speed', 'tab', 'tag', 'yankring'
         \]
 endif
 
