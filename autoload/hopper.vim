@@ -168,8 +168,24 @@ function! hopper#load_tag()
   call hopper#create_mode(mode, 'n', '', enter_key, mappings)
 endfunction
 
-function! hopper#next_tag()
-  try | tnext | catch | tfirst | endtry
+
+""""""""""""""
+"  quickfix  "
+""""""""""""""
+
+function! hopper#load_quickfix()
+  let mode = 'qf-hopper'
+  let enter_key = 'q'
+  let mappings = {
+        \  'j' : ':call hopper#cycle_next("c")<cr>',
+        \  'k' : ':call hopper#cycle_prev("c")<cr>',
+        \  'J' : ':cnfile<cr>',
+        \  'K' : ':cpfile<cr>',
+        \  'h' : ':cfirst<cr>',
+        \  'l' : ':clast<cr>',
+  \}
+
+  call hopper#create_mode(mode, 'n', '', enter_key, mappings)
 endfunction
 
 function! hopper#prev_tag()
