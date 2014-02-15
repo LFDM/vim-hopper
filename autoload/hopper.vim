@@ -158,8 +158,8 @@ function! hopper#load_tag()
   let mode = 'tag-hopper'
   let enter_key = 't'
   let mappings = {
-        \  'j' : ':call hopper#next_tag()<cr>',
-        \  'k' : ':call hopper#prev_tag()<cr>',
+        \  'j' : ':call hopper#cycle_next("t")<cr>',
+        \  'k' : ':call hopper#cycle_prev("t")<cr>',
         \  'h' : ':tfirst<cr>',
         \  'l' : ':tlast<cr>',
         \  'f' : '<c-]>',
@@ -286,4 +286,12 @@ function! hopper#add_mappings(mode_name, mode, opts, mappings)
   for [key, cmd] in items(a:mappings)
     call submode#map(a:mode_name, a:mode, a:opts, key, cmd)
   endfor
+endfunction
+
+function! hopper#cycle_next(cmd)
+  try | exec a:cmd.'next' | catch | exec a:cmd.'first' | endtry
+endfunction
+
+function! hopper#cycle_prev(cmd)
+  try | exec a:cmd.'prev' | catch | exec a:cmd.'last' | endtry
 endfunction
