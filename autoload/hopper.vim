@@ -70,17 +70,17 @@ function! hopper#prev_with_same_indentation()
   call hopper#search_with_same_indentation('b')
 endfunction
 
-function! hopper#add_movement_mappings(mode, mappings)
+function! s:add_movement_mappings(mode, mappings)
   for [key, cmd] in items(a:mappings)
-    call hopper#map_movement_key(a:mode, key, cmd)
+    call s:map_movement_key(a:mode, key, cmd)
   endfor
 endfunction
 
-function! hopper#map_movement_key(mode, key, move)
+function! s:map_movement_key(mode, key, move)
   call submode#map(a:mode, 'n', '', a:key, ':call hopper#'.a:move.'()<cr>')
 endfunction
 
-function! hopper#map_movement_enter_key(mode, key, move)
+function! s:map_movement_enter_key(mode, key, move)
   call submode#enter_with(a:mode, 'n', 'b', g:hopper_prefix.a:key, ':call hopper#'.a:move.'()<cr>')
 endfunction
 
@@ -101,9 +101,9 @@ function! s:define_movement_mode()
     let mappings['e'] = 'go_to_end'
   endif
 
-  call hopper#map_movement_enter_key(mode_name, 'j', 'next')
-  call hopper#map_movement_enter_key(mode_name, 'k', 'prev')
-  call hopper#add_movement_mappings(mode_name, mappings)
+  call s:map_movement_enter_key(mode_name, 'j', 'next')
+  call s:map_movement_enter_key(mode_name, 'k', 'prev')
+  call s:add_movement_mappings(mode_name, mappings)
 endfunction
 
 
