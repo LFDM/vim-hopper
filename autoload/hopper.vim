@@ -226,6 +226,37 @@ function! hopper#load_location()
 endfunction
 
 
+"""""""""""""
+"  windows  "
+"""""""""""""
+
+function! hopper#load_window()
+  let mode = 'window-hopper'
+  let enter_key = 'w'
+  let mappings = {
+        \  'j' : '<c-w>j',
+        \  'k' : '<c-w>k',
+        \  'h' : '<c-w>h',
+        \  'l' : '<c-w>l',
+        \  'r' : '<c-w>r',
+        \  'R' : '<c-w>R',
+        \  'x' : '<c-w>x',
+        \  'J' : '<c-w>-',
+        \  'K' : '<c-w>+',
+        \  'H' : '<c-w>>',
+        \  'L' : '<c-w><',
+        \  '<c-j>' : '5<c-w>-',
+        \  '<c-k>' : '5<c-w>+',
+        \  '<c-h>' : '5<c-w>>',
+        \  '<c-l>' : '5<c-w><-',
+        \}
+  " rotate needs to be catched
+  " needs more thinking
+
+  call hopper#create_mode(mode, 'n', '', enter_key, mappings)
+endfunction
+
+
 """"""""""""""
 "  exchange  "
 """"""""""""""
