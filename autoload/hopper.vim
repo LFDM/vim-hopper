@@ -389,3 +389,25 @@ function! hopper#guard(cmd, ...)
     echo message
   endtry
 endfunction
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                            public functions                             "
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+function! hopper#load_movement_mode()
+  let filetypes = split(&ft, '\.')
+  for ft in filetypes
+    if index(g:hopper_filetype_modes, ft) > -1
+      call b:load_hopper_by_filetype()
+      call hopper#define_movement_mode()
+      break
+    endif
+  endfor
+endfunction
+
+function! hopper#load_support_modes()
+  for support_mode in g:hopper_support_modes
+    exec 'call hopper#load_'.support_mode.'()'
+  endfor
+endfunction

@@ -32,25 +32,10 @@ if !exists('g:submode_keep_leaving_key')
   let g:submode_keep_leaving_key = 1
 endif
 
-function! hopper#load_movement_mode()
-  let filetypes = split(&ft, '\.')
-  for ft in filetypes
-    if index(g:hopper_filetype_modes, ft) > -1
-      call b:load_hopper_by_filetype()
-      call hopper#define_movement_mode()
-      break
-    endif
-  endfor
-endfunction
+augroup hopper
+  au Filetype * call hopper#load_movement_mode()
+augroup END
 
-function! hopper#load_support_modes()
-  for support_mode in g:hopper_support_modes
-    exec 'call hopper#load_'.support_mode.'()'
-  endfor
-endfunction
-
-au Filetype * call hopper#load_movement_mode()
 call hopper#load_support_modes()
-
 let g:loaded_hopper = 1
 
