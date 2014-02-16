@@ -84,7 +84,7 @@ function! hopper#map_movement_enter_key(mode, key, move)
   call submode#enter_with(a:mode, 'n', 'b', g:hopper_prefix.a:key, ':call hopper#'.a:move.'()<cr>')
 endfunction
 
-function! hopper#define_movement_mode()
+function! s:define_movement_mode()
   let mode_name = b:hopper_movement_mode_name.'-hopper'
   let mappings = {
         \ 'j' : 'next',
@@ -116,7 +116,7 @@ endfunction
 "  buffer  "
 """"""""""""
 
-function! hopper#load_buffer()
+function! s:load_buffer()
   let mode = 'buffer-hopper'
   let enter_key = 'b'
   let mappings = {
@@ -147,7 +147,7 @@ endfunction
 "  tab  "
 """""""""
 
-function! hopper#load_tab()
+function! s:load_tab()
   let mode = 'tab-hopper'
   let enter_key = 'tb'
   let mappings = {
@@ -167,7 +167,7 @@ endfunction
 "  tag  "
 """""""""
 
-function! hopper#load_tag()
+function! s:load_tag()
   let mode = 'tag-hopper'
   let enter_key = 't'
   let mappings = {
@@ -186,7 +186,7 @@ endfunction
 "  quickfix  "
 """"""""""""""
 
-function! hopper#load_quickfix()
+function! s:load_quickfix()
   let mode = 'qf-hopper'
   let enter_key = 'q'
   let mappings = {
@@ -210,7 +210,7 @@ endfunction
 "  location  "
 """"""""""""""
 
-function! hopper#load_location()
+function! s:load_location()
   let mode = 'loc-hopper'
   let enter_key = 'l'
   let mappings = {
@@ -234,7 +234,7 @@ endfunction
 "  windows  "
 """""""""""""
 
-function! hopper#load_window()
+function! s:load_window()
   let mode = 'window-hopper'
   let enter_key = 'w'
   let mappings = {
@@ -266,7 +266,7 @@ endfunction
 "  exchange  "
 """"""""""""""
 
-function! hopper#load_exchange()
+function! s:load_exchange()
   if !exists('g:loaded_unimpaired')
     return
   end
@@ -285,7 +285,7 @@ endfunction
 "  gitgutter  "
 """""""""""""""
 
-function! hopper#load_gitgutter()
+function! s:load_gitgutter()
   if !exists('g:loaded_gitgutter')
     return
   endif
@@ -317,7 +317,7 @@ endfunction
 "  speed  "
 """""""""""
 
-function! hopper#load_speed()
+function! s:load_speed()
   let mode = 'speed-hopper'
   let enter_key = 's'
   let mappings = {
@@ -339,7 +339,7 @@ endfunction
 "  yankring  "
 """"""""""""""
 
-function! hopper#load_yankring()
+function! s:load_yankring()
   if !exists('g:loaded_yankring')
     return
   endif
@@ -400,7 +400,7 @@ function! hopper#load_movement_mode()
   for ft in filetypes
     if index(g:hopper_filetype_modes, ft) > -1
       call b:load_hopper_by_filetype()
-      call hopper#define_movement_mode()
+      call s:define_movement_mode()
       break
     endif
   endfor
@@ -408,6 +408,6 @@ endfunction
 
 function! hopper#load_support_modes()
   for support_mode in g:hopper_support_modes
-    exec 'call hopper#load_'.support_mode.'()'
+    exec 'call s:load_'.support_mode.'()'
   endfor
 endfunction
