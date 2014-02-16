@@ -190,8 +190,8 @@ function! hopper#load_quickfix()
   let mode = 'qf-hopper'
   let enter_key = 'q'
   let mappings = {
-        \  'j' : ':call hopper#cycle_next("c")<cr>',
-        \  'k' : ':call hopper#cycle_prev("c")<cr>',
+        \  'j' : ':call hopper#guard("call hopper#cycle_next(\"c\")", "Quickfix list empty")<cr>',
+        \  'k' : ':call hopper#guard("call hopper#cycle_prev(\"c\")", "Quickfix list empty")<cr>',
         \  'J' : ':call hopper#guard("cnfile", "Last file reached")<cr>',
         \  'K' : ':call hopper#guard("cpfile", "First file reached")<cr>',
         \  'h' : ':call hopper#guard("cfirst", "Quickfix list empty")<cr>)',
@@ -214,8 +214,8 @@ function! hopper#load_location()
   let mode = 'loc-hopper'
   let enter_key = 'l'
   let mappings = {
-        \  'j' : ':call hopper#cycle_next("l")<cr>',
-        \  'k' : ':call hopper#cycle_prev("l")<cr>',
+        \  'j' : ':call hopper#guard("call hopper#cycle_next(\"l\")", "Location list empty")<cr>',
+        \  'k' : ':call hopper#guard("call hopper#cycle_prev(\"l\")", "Location list empty")<cr>',
         \  'J' : ':call hopper#guard("lnfile", "Last file reached")<cr>',
         \  'K' : ':call hopper#guard("lpfile", "First file reached")<cr>',
         \  'h' : ':call hopper#guard("lfirst", "Location list empty")<cr>)',
