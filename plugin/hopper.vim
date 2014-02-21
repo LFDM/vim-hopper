@@ -3,7 +3,7 @@ if exists('g:loaded_hopper') || &cp
 endif
 
 if !exists('g:hopper_prefix')
-  let g:hopper_prefix = '<esc>'
+  finish
 endif
 
 if !exists('g:hopper_filetype_modes')
