@@ -197,7 +197,7 @@ function! s:load_quickfix()
         \  'h' : ':call hopper#guard("cfirst", "Quickfix list empty")<cr>)',
         \  'l' : ':call hopper#guard("clast", "Quickfix list empty")<cr>)',
         \  'o' : ':copen<cr>,',
-        \  'c' : ':cclose<cr>,',
+        \  'q' : ':cclose<cr>,',
         \  '<c-j>' : ':call hopper#guard("cnewer")<cr>',
         \  '<c-k>' : ':call hopper#guard("colder")<cr>',
   \}
@@ -221,7 +221,7 @@ function! s:load_location()
         \  'h' : ':call hopper#guard("lfirst", "Location list empty")<cr>)',
         \  'l' : ':call hopper#guard("llast", "Location list empty")<cr>)',
         \  'o' : ':lopen<cr>,',
-        \  'c' : ':lclose<cr>,',
+        \  'q' : ':lclose<cr>,',
         \  '<c-j>' : ':call hopper#guard("lnewer")<cr>',
         \  '<c-k>' : ':call hopper#guard("lolder")<cr>',
   \}
