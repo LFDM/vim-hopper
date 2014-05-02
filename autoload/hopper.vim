@@ -224,6 +224,8 @@ function! s:load_location()
         \  'q' : ':lclose<cr>,',
         \  '<c-j>' : ':call hopper#guard("lnewer")<cr>',
         \  '<c-k>' : ':call hopper#guard("lolder")<cr>',
+        \  'c' : ':call cosco#commaOrSemiColon()<cr>'.g:hopper_prefix.'l',
+        \  'w' : ':w<cr>',
   \}
 
   call hopper#create_mode(mode, 'n', '', enter_key, mappings)
