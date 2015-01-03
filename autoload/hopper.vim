@@ -337,6 +337,30 @@ function! s:load_speed()
 endfunction
 
 
+""""""""""""""""""""""
+"  CtrlPCustomModes  "
+""""""""""""""""""""""
+
+function! s:load_ctrlp_custom_modes()
+  if !exists('g:loaded_ctrlp_custom_modes')
+    return
+  endif
+
+  let mode = 'ctrlp-custom'
+  let enter_key = 'p'
+  let cmds = ['p', 'o']
+  let mappings = {}
+
+  let i = 0
+  for cmd in cmds
+    let mappings[cmd] = ':CtrlPCustomMode'.i.'<cr>'
+    let i += 1
+  endfor
+
+  call hopper#create_mode(mode, 'n', '', enter_key, mappings)
+endfunction
+
+
 """"""""""""""
 "  yankring  "
 """"""""""""""
