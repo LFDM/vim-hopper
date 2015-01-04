@@ -348,7 +348,7 @@ function! s:load_ctrlp_custom_modes()
 
   let mode = 'ctrlp-custom'
   let enter_key = 'p'
-  let cmds = ['p', 'o']
+  let cmds = ['j', 'f', 'k', 'd', 'l', 's', "'", 'a', 'h', 'g']
   let mappings = {}
 
   let i = 0
