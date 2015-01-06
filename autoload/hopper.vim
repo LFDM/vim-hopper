@@ -338,26 +338,37 @@ endfunction
 
 
 """"""""""""""""""""""
-"  CtrlPCustomModes  "
+"  CtrlP"
 """"""""""""""""""""""
 
 function! s:load_ctrlp_custom_modes()
-  if !exists('g:loaded_ctrlp_custom_modes')
+  if !exists('g:loaded_ctrlp')
     return
   endif
 
-  let mode = 'ctrlp-custom'
+  let mode = 'ctrlp'
   let enter_key = 'p'
-  let cmds = ['j', 'f', 'k', 'd', 'l', 's', "'", 'a', 'h', 'g']
   let mappings = {}
 
-  let i = 0
-  for cmd in cmds
-    let mappings[cmd] = ':CtrlPCustomMode'.i.'<cr>'
-    let i += 1
+  let modes = {
+        \ 'b': 'Buffer',
+        \ 'm': 'MRU',
+        \ 'r': 'RelFiles',
+        \ 'i': 'Line',
+  \}
+
+  for [key, mode] in items(modes)
+    let mappings[key] = ':CtrlP'.mode.'<cr>'
   endfor
 
-  let mappings['r'] = ':CtrlPRelFiles<cr>'
+  if exists('g:loaded_ctrlp_custom_modes')
+    let cmds = ['j', 'f', 'k', 'd', 'l', 's', "'", 'a', 'h', 'g']
+    let i = 0
+    for cmd in cmds
+      let mappings[cmd] = ':CtrlPCustomMode'.i.'<cr>'
+      let i += 1
+    endfor
+  endif
 
   call hopper#create_mode(mode, 'n', '', enter_key, mappings)
 endfunction
