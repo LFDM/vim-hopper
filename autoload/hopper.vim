@@ -357,6 +357,8 @@ function! s:load_ctrlp_custom_modes()
     let i += 1
   endfor
 
+  let mappings['r'] = ':CtrlPRelFiles<cr>'
+
   call hopper#create_mode(mode, 'n', '', enter_key, mappings)
 endfunction
 
