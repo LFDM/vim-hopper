@@ -357,8 +357,8 @@ function! s:load_ctrlp_custom_modes()
         \ 'i': 'Line',
   \}
 
-  for [key, mode] in items(modes)
-    let mappings[key] = ':CtrlP'.mode.'<cr>'
+  for [key, m] in items(modes)
+    let mappings[key] = ':CtrlP'.m.'<cr>'
   endfor
 
   if exists('g:loaded_ctrlp_custom_modes')
