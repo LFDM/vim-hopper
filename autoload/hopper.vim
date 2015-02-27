@@ -338,7 +338,7 @@ endfunction
 
 
 """"""""""""""""""""""
-"  CtrlP"
+"  CtrlP"            "
 """"""""""""""""""""""
 
 function! s:load_ctrlp_custom_modes()
@@ -369,6 +369,23 @@ function! s:load_ctrlp_custom_modes()
       let i += 1
     endfor
   endif
+
+  call hopper#create_mode(mode, 'n', '', enter_key, mappings)
+endfunction
+
+
+""""""""""""""""""""
+"  merge-conflict  "
+""""""""""""""""""""
+
+function! s:load_merge_conflict()
+  let mode = "merge"
+  let enter_key = 'm'
+  let mappings = {
+        \  'j' : ':call search("\(<<<<\|>>>>\)")<cr>',
+        \  'k' : ':call search("\(<<<<\|>>>>\)", "b")<cr>',
+   \}
+
 
   call hopper#create_mode(mode, 'n', '', enter_key, mappings)
 endfunction
