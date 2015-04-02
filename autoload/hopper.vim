@@ -487,6 +487,8 @@ function! hopper#open_file(no)
     for vert in hor
       if vert[0] == 'source'
         call add(res, file)
+      elseif vert[0] == 'empty'
+        call add(res, '---')
       else
         let f = substitute(file, vert[0], vert[1], '')
         if file != f
@@ -503,14 +505,29 @@ function! hopper#open_file(no)
   let hor_i = 0
   for hor_splits in windows
     let vert_i = 0
+    call s:moveTopLeft()
+
     for vert_split in hor_splits
-      echo vert_split
-      if hor_i == 0 && vert_i == 0
-        exec "e ". vert_split
-      else
-        exec "normal! \<C-W>" . vert_i . "l"
-        exec "vsp" . vert_split
-        exec "normal! \<C-W>" . vert_i . "h"
+      " When the window is defined
+      if vert_split != '---'
+        " When we are at the topleft file
+        if hor_i == 0 && vert_i == 0
+          exec "e ". vert_split
+        else
+          call s:moveRight(vert_i)
+          " When no vertical split has yet been done
+          echom hor_i
+          if hor_i == 0
+            exec "vsp" . vert_split
+          else
+            call s:moveRight(vert_i)
+            call s:moveDown(hor_i - 1)
+            exec "sp" . vert_split
+            call s:moveUp(hor_i - 1)
+          endif
+
+          call s:moveLeft(vert_i)
+        endif
       endif
       let vert_i += 1
     endfor
@@ -518,9 +535,33 @@ function! hopper#open_file(no)
     let hor_i += 1
   endfor
 
-  " Move to top left window
+  call s:moveTopLeft()
+endfunction
+
+function! s:moveLeft(count)
+  exec "normal! \<C-W>" . a:count . "h"
+endfunction
+
+function! s:moveRight(count)
+  exec "normal! \<C-W>" . a:count . "l"
+endfunction
+
+function! s:moveLeft(count)
+  exec "normal! \<C-W>" . a:count . "l"
+endfunction
+
+function! s:moveUp(count)
+  exec "normal! \<C-W>" . a:count . "k"
+endfunction
+
+function! s:moveDown(count)
+  exec "normal! \<C-W>" . a:count . "j"
+endfunction
+
+function! s:moveTopLeft()
   exec "normal! \<C-W>t"
 endfunction
+
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
