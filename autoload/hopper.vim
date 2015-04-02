@@ -524,7 +524,6 @@ function! s:open_files(files, source)
             else
               call s:moveRight(vert_i)
               call s:moveDown(hor_i - 1)
-              echom s
               exec s . "sp" . f
               call s:moveUp(hor_i - 1)
             endif
