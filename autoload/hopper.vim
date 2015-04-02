@@ -485,16 +485,20 @@ function! hopper#open_file(no)
   for hor in files
     let res = []
     for vert in hor
+      let r = {}
       if vert[0] == 'source'
-        call add(res, file)
+        let r.file = file
       elseif vert[0] == 'empty'
-        call add(res, '---')
+        let r.file = '---'
       else
         let f = substitute(file, vert[0], vert[1], '')
         if file != f
-          call add(res, f)
+          let r.file = f
+        else
+          let r.file = '---'
         end
       endif
+      call add(res, r)
     endfor
     if len(res) > 0
       call add(windows, res)
@@ -509,20 +513,21 @@ function! hopper#open_file(no)
 
     for vert_split in hor_splits
       " When the window is defined
-      if vert_split != '---'
+      let f = vert_split.file
+      if f != '---'
         " When we are at the topleft file
         if hor_i == 0 && vert_i == 0
-          exec "e ". vert_split
+          exec "e ". f
         else
           call s:moveRight(vert_i)
           " When no vertical split has yet been done
           echom hor_i
           if hor_i == 0
-            exec "vsp" . vert_split
+            exec "vsp" . f
           else
             call s:moveRight(vert_i)
             call s:moveDown(hor_i - 1)
-            exec "sp" . vert_split
+            exec "sp" . f
             call s:moveUp(hor_i - 1)
           endif
 
