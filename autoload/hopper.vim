@@ -413,6 +413,30 @@ function! s:load_yankring()
 endfunction
 
 
+"""""""""""""""""
+"  file-opener  "
+"""""""""""""""""
+
+" This is rather specific for now, but fits the author's purpose
+
+function! s:load_file_opener()
+  let mode = 'file-o'
+  let enter_key = 'o'
+  let mappings = {
+        \ 'j' : ":call hopper#open_file(0)<cr>",
+        \ 'k' : ":call hopper#open_file(1)<cr>",
+        \ 'l' : ":call hopper#open_file(2)<cr>",
+        \ ';' : ":call hopper#open_file(3)<cr>",
+        \ 'a' : ":call hopper#open_file(4)<cr>",
+        \ 's' : ":call hopper#open_file(5)<cr>",
+        \ 'd' : ":call hopper#open_file(6)<cr>",
+        \ 'f' : ":call hopper#open_file(7)<cr>",
+        \ 'g' : ":call hopper#open_file(8)<cr>"
+  \}
+
+  call hopper#create_mode(mode, 'n', '', enter_key, mappings)
+endfunction
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                            helper functions                             "
@@ -444,6 +468,58 @@ function! hopper#guard(cmd, ...)
     let message = a:0 == 0 ? '' : a:1
     echo message
   endtry
+endfunction
+
+function! hopper#open_file(no)
+  let length = len(g:hopper_file_opener) - 1
+  if a:no > length | return | endif
+
+  let info = g:hopper_file_opener[a:no]
+  let file = expand('%:p')
+  let matcher = info[0]
+  let files = info[1]
+  if file !~ matcher | return | endif
+
+  " Calculate files we have access to
+  let windows = []
+  for hor in files
+    let res = []
+    for vert in hor
+      if vert[0] == 'source'
+        call add(res, file)
+      else
+        let f = substitute(file, vert[0], vert[1], '')
+        if file != f
+          call add(res, f)
+        end
+      endif
+    endfor
+    if len(res) > 0
+      call add(windows, res)
+    endif
+  endfor
+
+  " Create all splits and open file
+  let hor_i = 0
+  for hor_splits in windows
+    let vert_i = 0
+    for vert_split in hor_splits
+      echo vert_split
+      if hor_i == 0 && vert_i == 0
+        exec "e ". vert_split
+      else
+        exec "normal! \<C-W>" . vert_i . "l"
+        exec "vsp" . vert_split
+        exec "normal! \<C-W>" . vert_i . "h"
+      endif
+      let vert_i += 1
+    endfor
+
+    let hor_i += 1
+  endfor
+
+  " Move to top left window
+  exec "normal! \<C-W>t"
 endfunction
 
 
