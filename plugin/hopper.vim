@@ -15,9 +15,13 @@ endif
 
 if !exists('g:hopper_support_modes')
   let g:hopper_support_modes = [
-        \'buffer', 'exchange', 'gitgutter', 'location', 'merge_conflict', 'quickfix',
-        \'speed', 'tab', 'tag', 'yankring', 'window', 'ctrlp_custom_modes'
+        \'buffer', 'exchange', 'file_opener',  'gitgutter', 'location', 'merge_conflict',
+        \'quickfix', 'speed', 'tab', 'tag', 'yankring', 'window', 'ctrlp_custom_modes'
         \]
+endif
+
+if !exists('g:hopper_file_opener')
+  let g:hopper_file_opener = []
 endif
 
 if !exists('g:hopper_center_on_jump')
