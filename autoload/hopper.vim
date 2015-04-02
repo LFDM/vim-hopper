@@ -423,15 +423,23 @@ function! s:load_file_opener()
   let mode = 'file-o'
   let enter_key = 'o'
   let mappings = {
-        \ 'j' : ":call hopper#open_file(0)<cr>",
-        \ 'k' : ":call hopper#open_file(1)<cr>",
-        \ 'l' : ":call hopper#open_file(2)<cr>",
-        \ ';' : ":call hopper#open_file(3)<cr>",
-        \ 'a' : ":call hopper#open_file(4)<cr>",
-        \ 's' : ":call hopper#open_file(5)<cr>",
-        \ 'd' : ":call hopper#open_file(6)<cr>",
-        \ 'f' : ":call hopper#open_file(7)<cr>",
-        \ 'g' : ":call hopper#open_file(8)<cr>"
+        \  'j' : '<c-w>j',
+        \  'k' : '<c-w>k',
+        \  'h' : '<c-w>h',
+        \  'l' : '<c-w>l',
+        \  'r' : '<c-w>r',
+        \  'R' : '<c-w>R',
+        \  'J' : '<c-w>+',
+        \  'K' : '<c-w>-',
+        \  'H' : '<c-w>>',
+        \  'L' : '<c-w><',
+        \  'e' : '<c-w>=',
+        \  'c' : '<c-w>c',
+        \  'C' : '<c-w><c-o>',
+        \ 'a' : ":call hopper#open_file(0)<cr>",
+        \ 's' : ":call hopper#open_file(1)<cr>",
+        \ 'd' : ":call hopper#open_file(2)<cr>",
+        \ 'f' : ":call hopper#open_file(3)<cr>"
   \}
 
   call hopper#create_mode(mode, 'n', '', enter_key, mappings)
