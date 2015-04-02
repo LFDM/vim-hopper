@@ -436,10 +436,10 @@ function! s:load_file_opener()
         \  'e' : '<c-w>=',
         \  'c' : '<c-w>c',
         \  'C' : '<c-w><c-o>',
-        \ 'a' : ":call hopper#open_file(0)<cr>",
-        \ 's' : ":call hopper#open_file(1)<cr>",
-        \ 'd' : ":call hopper#open_file(2)<cr>",
-        \ 'f' : ":call hopper#open_file(3)<cr>"
+        \ 'a' : ":call hopper#open_files(0)<cr>",
+        \ 's' : ":call hopper#open_files(1)<cr>",
+        \ 'd' : ":call hopper#open_files(2)<cr>",
+        \ 'f' : ":call hopper#open_files(3)<cr>"
   \}
 
   call hopper#create_mode(mode, 'n', '', enter_key, mappings)
@@ -478,32 +478,81 @@ function! hopper#guard(cmd, ...)
   endtry
 endfunction
 
-function! hopper#open_file(no)
+function! hopper#open_files(no)
   let length = len(g:hopper_file_opener) - 1
   if a:no > length | return | endif
 
-  let info = g:hopper_file_opener[a:no]
+  let openers = g:hopper_file_opener[a:no]
   let file = expand('%:p')
-  let matcher = info[0]
-  let files = info[1]
-  if file !~ matcher | return | endif
+  for opener in openers
+    let matcher = opener[0]
+    let files = opener[1]
+    if file =~ matcher
+      call s:open_files(files, file)
+      return
+    endif
+  endfor
+endfunction
 
-  " Calculate files we have access to
-  let windows = []
-  for hor in files
+function! s:open_files(files, source)
+    " Calculate files we have access to
+    let windows = s:setup_windows(a:files, a:source)
+
+    " Create all splits and open file
+    let hor_i = 0
+    for hor_splits in windows
+      let vert_i = 0
+      call s:moveTopLeft()
+
+      for vert_split in hor_splits
+        " When the window is defined
+        let f = vert_split.file
+        let s = vert_split.size
+        if f != '---'
+          " When we are at the topleft file
+          if hor_i == 0 && vert_i == 0
+            exec "e ". f
+          else
+            call s:moveRight(vert_i)
+            " When no vertical split has yet been done
+            if hor_i == 0
+              exec s . "vsp" . f
+            else
+              call s:moveRight(vert_i)
+              call s:moveDown(hor_i - 1)
+              echom s
+              exec s . "sp" . f
+              call s:moveUp(hor_i - 1)
+            endif
+
+            call s:moveLeft(vert_i)
+          endif
+        endif
+        let vert_i += 1
+      endfor
+
+      let hor_i += 1
+    endfor
+
+    call s:moveTopLeft()
+endfunction
+
+function! s:setup_windows(files, source)
+  let result = []
+  for hor in a:files
     let res = []
     for vert in hor
       let r = { 'size': '' }
       if vert[0] == 'source'
-        let r.file = file
+        let r.file = a:source
         if len(vert) > 1
           let r.size = vert[1]
         endif
       elseif vert[0] == 'empty'
         let r.file = '---'
       else
-        let f = substitute(file, vert[0], vert[1], '')
-        if file != f
+        let f = substitute(a:source, vert[0], vert[1], '')
+        if a:source != f
           let r.file = f
           if len(vert) > 2
             let r.size = vert[2]
@@ -515,47 +564,10 @@ function! hopper#open_file(no)
       call add(res, r)
     endfor
     if len(res) > 0
-      call add(windows, res)
+      call add(result, res)
     endif
   endfor
-
-  " Create all splits and open file
-  let hor_i = 0
-  for hor_splits in windows
-    let vert_i = 0
-    call s:moveTopLeft()
-
-    for vert_split in hor_splits
-      " When the window is defined
-      let f = vert_split.file
-      let s = vert_split.size
-      if f != '---'
-        " When we are at the topleft file
-        if hor_i == 0 && vert_i == 0
-          exec "e ". f
-        else
-          call s:moveRight(vert_i)
-          " When no vertical split has yet been done
-          if hor_i == 0
-            exec s . "vsp" . f
-          else
-            call s:moveRight(vert_i)
-            call s:moveDown(hor_i - 1)
-            echom s
-            exec s . "sp" . f
-            call s:moveUp(hor_i - 1)
-          endif
-
-          call s:moveLeft(vert_i)
-        endif
-      endif
-      let vert_i += 1
-    endfor
-
-    let hor_i += 1
-  endfor
-
-  call s:moveTopLeft()
+  return result
 endfunction
 
 function! s:moveLeft(count)
