@@ -450,7 +450,7 @@ function! s:load_file_opener()
   for preset in presets
     if i <= max
       let var =  g:hopper_file_opener[i]
-      let mappings[preset] = ":call lookup#open('" . var."')<cr>"
+      let mappings[preset] = ":call lookup#open_layout('" . var. "')<cr>"
     endif
     let i += 1
   endfor
