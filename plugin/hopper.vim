@@ -26,8 +26,7 @@ endfor
 
 augroup hopper
   au Filetype * call hopper#load_movement_mode()
+  au VimEnter * call hopper#load_support_modes()
 augroup END
 
-
-call hopper#load_support_modes()
 let g:loaded_hopper = 1
