@@ -417,9 +417,9 @@ endfunction
 "  file-opener  "
 """""""""""""""""
 
-" This is rather specific for now, but fits the author's purpose
-
 function! s:load_file_opener()
+  if !exists('g:loaded_lookup') | return | endif
+
   let mode = 'file-o'
   let enter_key = 'o'
   let mappings = {
@@ -439,12 +439,21 @@ function! s:load_file_opener()
         \  '<c-l>' : '5<c-w><-',
         \  'e' : '<c-w>=',
         \  'c' : '<c-w>c',
-        \  'C' : '<c-w><c-o>',
-        \ 'a' : ":call hopper#open_files(0)<cr>",
-        \ 's' : ":call hopper#open_files(1)<cr>",
-        \ 'd' : ":call hopper#open_files(2)<cr>",
-        \ 'f' : ":call hopper#open_files(3)<cr>"
+        \  'q' : '<c-w>c',
+        \  'C' : '<c-w><c-o>'
   \}
+
+  let presets = ['a', 's', 'd', 'f']
+
+  let max = len(g:hopper_file_opener) - 1
+  let i = 0
+  for preset in presets
+    if i <= max
+      let var =  g:hopper_file_opener[i]
+      let mappings[preset] = ":call lookup#open('" . var."')<cr>"
+    endif
+    let i += 1
+  endfor
 
   call hopper#create_mode(mode, 'n', '', enter_key, mappings)
 endfunction
